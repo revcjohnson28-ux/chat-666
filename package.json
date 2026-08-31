@@ -1,6 +1,6 @@
 {
   "name": "edens-viper-network",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "private": true,
   "description": "Eden's Viper Paltalk + Discord style community chat with voice, video, moderation, blocking, DMs and file sharing",
   "main": "server.js",
