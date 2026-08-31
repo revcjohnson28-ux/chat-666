@@ -48,3 +48,6 @@ button{font-family:Georgia,'Times New Roman',serif;letter-spacing:.6px}.top-acti
 .emoji-modal-head{position:sticky;top:-20px;z-index:10;background:linear-gradient(145deg,#160d14,#09070b);padding:12px 2px 10px;border-bottom:1px solid #4a1727;margin-bottom:6px}
 .emoji-close{display:inline-flex!important;align-items:center;justify-content:center!important;min-width:88px!important;background:#5b1020!important;border:1px solid #a02b43!important;color:#fff!important;border-radius:5px!important;padding:8px 10px!important;font-size:11px!important;cursor:pointer!important}
 .emoji-close:hover{background:#7b162c!important}.emoji-section{display:block!important}.emoji-grid{display:grid!important;visibility:visible!important;opacity:1!important}.emoji-grid button{display:block!important;visibility:visible!important;opacity:1!important}
+
+/* v6.3.2 static emoji vault: buttons exist in HTML, no dynamic rendering required */
+#emojiModal.hidden{display:none!important}#emojiModal:not(.hidden){display:grid!important}.emoji-card{display:block!important;position:relative;overflow:auto!important}.emoji-modal-head{display:flex!important}.emoji-section{display:block!important}.emoji-grid{display:grid!important}.emoji-choice{display:block!important}.emoji-close{position:relative;z-index:20}

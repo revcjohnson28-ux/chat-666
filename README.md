@@ -37,3 +37,7 @@ This project must replace all current files in the same GitHub repository used b
 ## Important media note
 
 The current WebRTC system is peer-to-peer and uses public STUN servers. For larger rooms or restrictive networks, add TURN and later an SFU such as LiveKit, mediasoup, Janus, or similar.
+
+
+## v6.3.2
+Emoji vault rebuilt with static HTML buttons and robust close handling.

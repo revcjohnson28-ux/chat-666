@@ -85,11 +85,13 @@ allowNativePaste(input);allowNativePaste($('pmInput'));$('pasteMain').onclick=()
 document.addEventListener('click',e=>{const menu=$('userContextMenu');if(menu&&!menu.classList.contains('hidden')&&!menu.contains(e.target)&&!e.target.closest('.user'))closeUserMenu();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeUserMenu();});window.addEventListener('resize',closeUserMenu);window.addEventListener('scroll',closeUserMenu,true);
 $('messageForm').onsubmit=e=>{e.preventDefault();if(input.value.trim()){socket.emit('message',input.value);input.value='';socket.emit('typing',false);}};input.oninput=()=>socket&&socket.emit('typing',!!input.value.trim());
-function addEmojiButtons(list,gridId){const grid=$(gridId);if(!grid)return;grid.innerHTML='';list.forEach(e=>{const b=document.createElement('button');b.type='button';b.textContent=e;b.title=`Insert ${e}`;b.setAttribute('aria-label',`Insert ${e}`);b.onclick=()=>{input.value+=`${input.value&&!input.value.endsWith(' ')?' ':''}${e} `;input.focus();};grid.appendChild(b);});}
-function renderEmojiVault(){addEmojiButtons(normalEmojis,'normalEmojiGrid');addEmojiButtons(gothEmojis,'emojiGrid');}
-$('emoji').onclick=()=>{renderEmojiVault();$('emojiModal').classList.remove('hidden');};
-$('closeEmoji').onclick=()=>$('emojiModal').classList.add('hidden');
-renderEmojiVault();
+function openEmojiVault(){const m=$('emojiModal');if(!m)return;m.classList.remove('hidden');m.setAttribute('aria-hidden','false');}
+function closeEmojiVault(){const m=$('emojiModal');if(!m)return;m.classList.add('hidden');m.setAttribute('aria-hidden','true');}
+$('emoji').onclick=openEmojiVault;
+$('closeEmoji').onclick=closeEmojiVault;
+document.addEventListener('click',e=>{const b=e.target.closest('.emoji-choice');if(!b)return;const emoji=b.dataset.emoji||b.textContent||'';if(!emoji)return;input.value+=`${input.value&&!input.value.endsWith(' ')?' ':''}${emoji} `;input.focus();});
+$('emojiModal').addEventListener('click',e=>{if(e.target===$('emojiModal'))closeEmojiVault();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('emojiModal').classList.contains('hidden'))closeEmojiVault();});
 $('newRoom').onclick=()=>$('modal').classList.remove('hidden');$('roomForm').onsubmit=e=>{e.preventDefault();socket.emit('create_room',{name:$('roomName').value,topic:$('roomTopicInput').value});$('modal').classList.add('hidden');e.target.reset();};
 $('profileBtn').onclick=()=>$('profileModal').classList.remove('hidden');$('profileForm').onsubmit=e=>{e.preventDefault();socket.emit('update_profile',{bio:$('bio').value});$('profileModal').classList.add('hidden');};
 $('pmForm').onsubmit=e=>{e.preventDefault();const text=$('pmInput').value.trim();if(text){socket.emit('private_message',{to:pmTarget,text});$('pmInput').value='';}};$('pmUpload').onclick=uploadDmFile;
