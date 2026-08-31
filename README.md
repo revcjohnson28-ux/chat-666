@@ -1,8 +1,8 @@
-# Eden's Viper Network v5
+# Eden's Viper Network v6
 
 A Paltalk + Discord-style community chat built on Node.js, Socket.IO and WebRTC.
 
-## v5 features
+## v6 features
 
 - Persistent username/password accounts
 - Protected owner account from `OWNER_USERNAME` / `OWNER_PASSWORD`
@@ -17,6 +17,9 @@ A Paltalk + Discord-style community chat built on Node.js, Socket.IO and WebRTC.
 - Gothic emoji picker
 - WebRTC voice/video room broadcasting
 - Persistent messages, rooms, bans, blocks and DM history
+- Visible `SERVER v6 READY` check so a partial deployment cannot fail silently
+- Clickable member-action buttons instead of typed prompt commands
+- Existing `Eden's Viper` accounts are automatically restored to owner status
 
 ## Environment variables
 
@@ -29,7 +32,7 @@ A Paltalk + Discord-style community chat built on Node.js, Socket.IO and WebRTC.
 
 ## Render
 
-This project can replace the current files in the same GitHub repository used by your existing Render service. `npm install` adds Multer for DM uploads. Keep a persistent Render disk mounted at `/var/data` if you want accounts/messages/uploads to survive redeploys.
+This project must replace all current files in the same GitHub repository used by your existing Render service. Keep a persistent Render disk mounted at `/var/data` if you want accounts/messages/uploads to survive redeploys. After deployment, the header must say `SERVER v6 READY`.
 
 ## Important media note
 

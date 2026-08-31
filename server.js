@@ -58,10 +58,15 @@ function ensureDefaults() {
     ['The Coven', 'Occultism, magick, mythology & esoterica', 'Occult']
   ];
   for (const [name, topic, category] of defaults) { if (!store.rooms[name]) store.rooms[name] = { name, topic, category, createdAt: now() }; if (!store.messages[name]) store.messages[name] = []; }
-  if (OWNER_PASSWORD) {
-    const k = key(OWNER_USERNAME);
-    if (!store.users[k]) store.users[k] = { username: OWNER_USERNAME, passwordHash: hashPassword(OWNER_PASSWORD), role: 'owner', avatar: OWNER_USERNAME.slice(0, 2).toUpperCase(), bio: 'Network owner', blocked: [], createdAt: now() };
-    else { store.users[k].role = 'owner'; if (!Array.isArray(store.users[k].blocked)) store.users[k].blocked = []; }
+  // Always restore the configured owner's role when that account already
+  // exists on a persistent disk. OWNER_PASSWORD is only needed to create the
+  // account for the first time; existing owners keep their current password.
+  const ownerKey = key(OWNER_USERNAME), existingOwner = store.users[ownerKey];
+  if (existingOwner) {
+    existingOwner.role = 'owner';
+    if (!Array.isArray(existingOwner.blocked)) existingOwner.blocked = [];
+  } else if (OWNER_PASSWORD) {
+    store.users[ownerKey] = { username: OWNER_USERNAME, passwordHash: hashPassword(OWNER_PASSWORD), role: 'owner', avatar: OWNER_USERNAME.slice(0, 2).toUpperCase(), bio: 'Network owner', blocked: [], createdAt: now() };
   }
   save();
 }
@@ -118,8 +123,8 @@ function serviceBan(username, by) {
 }
 function serviceUnban(username) { const k = key(username); const before = store.bans.length; store.bans = store.bans.filter(b => b.username !== k); if (store.bans.length !== before) save(); }
 
-app.get('/health', (req, res) => res.json({ ok: true, version: 5 }));
-app.get('/api/config', (req, res) => res.json({ ownerConfigured: !!OWNER_PASSWORD, ownerUsername: OWNER_USERNAME, maxUploadMb: MAX_UPLOAD_MB }));
+app.get('/health', (req, res) => res.json({ ok: true, version: 6 }));
+app.get('/api/config', (req, res) => res.json({ version: 6, ownerConfigured: !!getUser(OWNER_USERNAME), ownerUsername: OWNER_USERNAME, maxUploadMb: MAX_UPLOAD_MB }));
 app.post('/api/register', (req, res) => {
   const username = clean(req.body?.username, 24), password = String(req.body?.password || '');
   if (username.length < 3) return res.status(400).json({ error: 'Username must be at least 3 characters.' });
@@ -242,4 +247,4 @@ io.on('connection', socket => {
   socket.on('disconnect', () => { const state = online.get(socket.id); if (!state) return; online.delete(socket.id); if (state.room) { socket.to(state.room).emit('rtc_peer_left', { socketId: socket.id }); socket.to(state.room).emit('system', `${u.username} disconnected.`); broadcastUsers(state.room); } emitCounts(); });
 });
 
-server.listen(PORT, HOST, () => console.log(`Eden's Viper Network v5 listening on http://${HOST}:${PORT}`));
+server.listen(PORT, HOST, () => console.log(`Eden's Viper Network v6 listening on http://${HOST}:${PORT}`));
