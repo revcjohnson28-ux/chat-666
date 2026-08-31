@@ -1,65 +1,55 @@
-# Eden's Viper Network v3
+# Eden's Viper Network v4 — Voice + Video
 
-A deployable Paltalk-style real-time community chat for edensviper.com.
+A deployable Paltalk-style community chat built with Node.js, Express, Socket.IO and WebRTC.
 
-## Included
-- Account registration and password login
-- Passwords hashed with Node.js scrypt
-- Secure owner role controlled by environment variables (no username-only owner access)
-- Owner and moderator roles
-- Kick and ban controls
-- Persistent rooms, room messages, private messages, profiles, users, and bans
-- Private messaging
-- User bios and online member list
-- Room creation by owner/moderators
-- Socket.IO live chat
-- Bandzoogle-friendly responsive layout
-- Render Blueprint (`render.yaml`)
-- Health endpoint at `/health`
+## New in v4
 
-## Run locally
-1. Copy `.env.example` values into your shell/environment. Do not commit your real password.
-2. Run `npm install`.
-3. Set at minimum `OWNER_PASSWORD` and ideally `SESSION_SECRET`.
-4. Run `npm start`.
-5. Open `http://localhost:3000`.
+- Room voice through WebRTC
+- Room camera/video through WebRTC
+- Mic and camera are OFF by default
+- Independent mic and camera buttons
+- Active broadcaster video/audio tiles
+- Mic/camera indicators in the member list
+- Owner/moderator can mute a member's mic or turn off a member's camera
+- Room changes clean up old peer connections
+- Existing text chat, accounts, private messages, rooms and moderation remain intact
 
-Example on macOS/Linux:
+## Deploy over your current Render service
 
-    export OWNER_USERNAME="Eden's Viper"
-    export OWNER_PASSWORD="your-long-private-password"
-    export SESSION_SECRET="your-long-random-secret"
-    npm install
-    npm start
+If your existing GitHub repository is already connected to Render:
 
-## Deploy on Render
-The included `render.yaml` creates a Node web service and a 1 GB persistent disk mounted at `/var/data`.
+1. Back up your current repository if desired.
+2. Replace the old v3 source files with the files from this v4 package.
+3. Commit/push the changes to the same branch Render watches.
+4. Render should automatically redeploy. If it does not, use Manual Deploy -> Deploy latest commit.
+5. Keep the same environment variables and persistent disk settings you already use.
 
-1. Put this project in a GitHub repository.
-2. In Render choose New > Blueprint and connect that repository.
-3. Render reads `render.yaml`.
-4. When prompted, set `OWNER_PASSWORD` to a strong private password.
-5. Deploy.
-6. Open the assigned `https://...onrender.com` URL and log in using the owner username and the password you set.
+The live URL can remain the same (for example `https://chat-666.onrender.com/`). Your Bandzoogle iframe and existing desktop clients do not need a new server URL.
 
-The persistent disk requires a paid Render web-service plan. Without a persistent disk, Render's filesystem is ephemeral and account/message changes can be lost during redeploys or restarts.
+## Important WebRTC note
 
-## Bandzoogle embed
-After Render gives you a chat URL, add an HTML/code block on your Bandzoogle Chat page:
+This version uses public STUN servers for direct peer-to-peer connections. This is appropriate for initial testing and smaller rooms, but some restrictive networks/NATs will not be able to connect directly. For reliable public service, add a TURN relay server. For larger rooms, use an SFU architecture (for example LiveKit, mediasoup, Janus or similar) rather than a full mesh.
 
-    <iframe
-      src="https://YOUR-CHAT.onrender.com"
-      width="100%"
-      height="850"
-      frameborder="0"
-      allow="microphone; camera; fullscreen"
-      style="border:0;width:100%;min-height:850px">
-    </iframe>
+## Browser permissions
 
-Later, you can add a custom domain such as `chat.edensviper.com` in Render and use that URL in the iframe.
+Camera and microphone access requires HTTPS or localhost. Render provides HTTPS. If embedding in Bandzoogle, the iframe must include permissions such as:
 
-## Important security notes
-- Never put the real owner password in source code, GitHub, or Bandzoogle HTML.
-- Set `OWNER_PASSWORD` only in Render's environment-variable controls.
-- Keep `SESSION_SECRET` secret.
-- For a larger public community, migrate the JSON data store to a managed database such as PostgreSQL. This version is intended for a small community and a single server instance.
+```html
+allow="microphone; camera; fullscreen"
+```
+
+## Environment variables
+
+- `OWNER_USERNAME` — defaults to `Eden's Viper`
+- `OWNER_PASSWORD` — required for owner login
+- `SESSION_SECRET` — long random secret
+- `DATA_DIR` — persistent data path, `/var/data` on the included Render configuration
+
+## Local test
+
+```bash
+npm install
+OWNER_PASSWORD='choose-a-test-password' SESSION_SECRET='choose-a-random-secret' npm start
+```
+
+Then open `http://localhost:3000`.
