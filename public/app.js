@@ -85,8 +85,11 @@ allowNativePaste(input);allowNativePaste($('pmInput'));$('pasteMain').onclick=()
 document.addEventListener('click',e=>{const menu=$('userContextMenu');if(menu&&!menu.classList.contains('hidden')&&!menu.contains(e.target)&&!e.target.closest('.user'))closeUserMenu();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeUserMenu();});window.addEventListener('resize',closeUserMenu);window.addEventListener('scroll',closeUserMenu,true);
 $('messageForm').onsubmit=e=>{e.preventDefault();if(input.value.trim()){socket.emit('message',input.value);input.value='';socket.emit('typing',false);}};input.oninput=()=>socket&&socket.emit('typing',!!input.value.trim());
-function addEmojiButtons(list,gridId){const grid=$(gridId);list.forEach(e=>{const b=document.createElement('button');b.type='button';b.textContent=e;b.title=`Insert ${e}`;b.onclick=()=>{input.value+=`${input.value&&!input.value.endsWith(' ')?' ':''}${e} `;input.focus();};grid.appendChild(b);});}
-$('emoji').onclick=()=>{$('emojiModal').classList.remove('hidden');};addEmojiButtons(normalEmojis,'normalEmojiGrid');addEmojiButtons(gothEmojis,'emojiGrid');
+function addEmojiButtons(list,gridId){const grid=$(gridId);if(!grid)return;grid.innerHTML='';list.forEach(e=>{const b=document.createElement('button');b.type='button';b.textContent=e;b.title=`Insert ${e}`;b.setAttribute('aria-label',`Insert ${e}`);b.onclick=()=>{input.value+=`${input.value&&!input.value.endsWith(' ')?' ':''}${e} `;input.focus();};grid.appendChild(b);});}
+function renderEmojiVault(){addEmojiButtons(normalEmojis,'normalEmojiGrid');addEmojiButtons(gothEmojis,'emojiGrid');}
+$('emoji').onclick=()=>{renderEmojiVault();$('emojiModal').classList.remove('hidden');};
+$('closeEmoji').onclick=()=>$('emojiModal').classList.add('hidden');
+renderEmojiVault();
 $('newRoom').onclick=()=>$('modal').classList.remove('hidden');$('roomForm').onsubmit=e=>{e.preventDefault();socket.emit('create_room',{name:$('roomName').value,topic:$('roomTopicInput').value});$('modal').classList.add('hidden');e.target.reset();};
 $('profileBtn').onclick=()=>$('profileModal').classList.remove('hidden');$('profileForm').onsubmit=e=>{e.preventDefault();socket.emit('update_profile',{bio:$('bio').value});$('profileModal').classList.add('hidden');};
 $('pmForm').onsubmit=e=>{e.preventDefault();const text=$('pmInput').value.trim();if(text){socket.emit('private_message',{to:pmTarget,text});$('pmInput').value='';}};$('pmUpload').onclick=uploadDmFile;
