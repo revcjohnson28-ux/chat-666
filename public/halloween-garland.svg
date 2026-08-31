@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 78" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="cord" x1="0" x2="1"><stop stop-color="#481221"/><stop offset=".5" stop-color="#a42a42"/><stop offset="1" stop-color="#481221"/></linearGradient>
+    <radialGradient id="pump"><stop stop-color="#ff9b31"/><stop offset="1" stop-color="#9a310b"/></radialGradient>
+  </defs>
+  <path d="M0 16 Q300 48 600 18 T1200 16" fill="none" stroke="url(#cord)" stroke-width="2" opacity=".75"/>
+  <g fill="#130911" stroke="#7c2135" stroke-width="1.4" opacity=".92">
+    <path d="M115 24 q-20-15-40-2 13 2 20 12-13 2-20 13 22 1 40-13 18 14 40 13-7-11-20-13 7-10 20-12-20-13-40 2z"/>
+    <path d="M1015 22 q-20-15-40-2 13 2 20 12-13 2-20 13 22 1 40-13 18 14 40 13-7-11-20-13 7-10 20-12-20-13-40 2z"/>
+  </g>
+  <g transform="translate(575 24)">
+    <ellipse cx="25" cy="25" rx="25" ry="20" fill="url(#pump)" stroke="#d75a19" stroke-width="2"/>
+    <path d="M24 5 q2-10 10-13" fill="none" stroke="#5e5120" stroke-width="5"/>
+    <path d="M9 20 l9 5-9 4zM41 20 l-9 5 9 4zM16 36 q9 8 18 0" fill="#190608"/>
+  </g>
+  <g stroke="#8d7488" stroke-width="1" opacity=".36" fill="none">
+    <path d="M0 0 l55 55M0 22 l55 0M22 0 l0 55M0 0 q28 16 55 0M0 0 q16 28 0 55"/>
+    <path d="M1200 0 l-55 55M1200 22 l-55 0M1178 0 l0 55M1200 0 q-28 16-55 0M1200 0 q-16 28 0 55"/>
+  </g>
+</svg>

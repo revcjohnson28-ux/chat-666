@@ -4,7 +4,8 @@ let localStream=new MediaStream(),localLocks={audio:false,video:false},roomUsers
 const peers=new Map(),remoteStreams=new Map();
 const login=$('login'),messages=$('messages'),input=$('messageInput');
 const rtcConfig={iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]};
-const gothEmojis=['🦇','🖤','🩸','🕯️','💀','☠️','🕸️','🕷️','🌙','🌑','🥀','⚰️','🪦','🔮','🧛','🧛‍♀️','🧛‍♂️','🐍','🐺','🐦‍⬛','🦉','🦴','🧿','🗡️','⚔️','⛓️','🌹','💜','❤️‍🔥','😈','👿','👻','🪶','🖋️','🫀','🫦','🩶','🌘','🌒','🦅','🔥'];
+const normalEmojis=['😀','😃','😄','😁','😆','😅','😂','🤣','😊','🙂','😉','😍','🥰','😘','😎','🤩','🥳','🤔','🙄','😴','😢','😭','😡','🤬','😱','🤗','🤭','🫡','👍','👎','👌','✌️','🤘','👏','🙏','💪','👀','❤️','💕','💯','✨','⭐','🔥','🎉','🎶','🎵','☕','🍕','🍔','🌮','🍎','🐱','🐶','🌞','🌈'];
+const gothEmojis=['🦇','🖤','🩸','🕯️','💀','☠️','🕸️','🕷️','🎃','👻','🌙','🌑','🥀','⚰️','🪦','🔮','🧛','🧛‍♀️','🧛‍♂️','🐍','🐺','🐦‍⬛','🦉','🦴','🧿','🗡️','⚔️','⛓️','🌹','💜','❤️‍🔥','😈','👿','🪶','🖋️','🫀','🫦','🩶','🌘','🌒','🦅','🔥','🍂','🍁','🌫️','🧙','🧙‍♀️','🧙‍♂️','🧟','🧟‍♀️','🧟‍♂️'];
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
 function token(){return localStorage.getItem('ev_token')||'';}
@@ -84,7 +85,8 @@ allowNativePaste(input);allowNativePaste($('pmInput'));$('pasteMain').onclick=()
 document.addEventListener('click',e=>{const menu=$('userContextMenu');if(menu&&!menu.classList.contains('hidden')&&!menu.contains(e.target)&&!e.target.closest('.user'))closeUserMenu();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeUserMenu();});window.addEventListener('resize',closeUserMenu);window.addEventListener('scroll',closeUserMenu,true);
 $('messageForm').onsubmit=e=>{e.preventDefault();if(input.value.trim()){socket.emit('message',input.value);input.value='';socket.emit('typing',false);}};input.oninput=()=>socket&&socket.emit('typing',!!input.value.trim());
-$('emoji').onclick=()=>{$('emojiModal').classList.remove('hidden');};gothEmojis.forEach(e=>{const b=document.createElement('button');b.type='button';b.textContent=e;b.onclick=()=>{input.value+=` ${e}`;input.focus();};$('emojiGrid').appendChild(b);});
+function addEmojiButtons(list,gridId){const grid=$(gridId);list.forEach(e=>{const b=document.createElement('button');b.type='button';b.textContent=e;b.title=`Insert ${e}`;b.onclick=()=>{input.value+=`${input.value&&!input.value.endsWith(' ')?' ':''}${e} `;input.focus();};grid.appendChild(b);});}
+$('emoji').onclick=()=>{$('emojiModal').classList.remove('hidden');};addEmojiButtons(normalEmojis,'normalEmojiGrid');addEmojiButtons(gothEmojis,'emojiGrid');
 $('newRoom').onclick=()=>$('modal').classList.remove('hidden');$('roomForm').onsubmit=e=>{e.preventDefault();socket.emit('create_room',{name:$('roomName').value,topic:$('roomTopicInput').value});$('modal').classList.add('hidden');e.target.reset();};
 $('profileBtn').onclick=()=>$('profileModal').classList.remove('hidden');$('profileForm').onsubmit=e=>{e.preventDefault();socket.emit('update_profile',{bio:$('bio').value});$('profileModal').classList.add('hidden');};
 $('pmForm').onsubmit=e=>{e.preventDefault();const text=$('pmInput').value.trim();if(text){socket.emit('private_message',{to:pmTarget,text});$('pmInput').value='';}};$('pmUpload').onclick=uploadDmFile;
