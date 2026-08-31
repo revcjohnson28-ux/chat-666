@@ -126,15 +126,17 @@ function serviceUnban(username) { const k = key(username); const before = store.
 app.get('/health', (req, res) => res.json({ ok: true, version: 6 }));
 app.get('/api/config', (req, res) => res.json({ version: 6, ownerConfigured: !!getUser(OWNER_USERNAME), ownerUsername: OWNER_USERNAME, maxUploadMb: MAX_UPLOAD_MB }));
 app.post('/api/register', (req, res) => {
+  if (req.body?.eulaAccepted !== true) return res.status(400).json({ error: 'You must agree to the EULA before creating an account.' });
   const username = clean(req.body?.username, 24), password = String(req.body?.password || '');
   if (username.length < 3) return res.status(400).json({ error: 'Username must be at least 3 characters.' });
   if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
   const k = key(username); if (k === key(OWNER_USERNAME)) return res.status(403).json({ error: 'That username is reserved.' });
   if (store.users[k]) return res.status(409).json({ error: 'Username already exists.' });
-  store.users[k] = { username, passwordHash: hashPassword(password), role: 'member', avatar: username.slice(0, 2).toUpperCase(), bio: '', blocked: [], createdAt: now() }; save();
+  store.users[k] = { username, passwordHash: hashPassword(password), role: 'member', avatar: username.slice(0, 2).toUpperCase(), bio: '', blocked: [], eulaAcceptedAt: now(), createdAt: now() }; save();
   res.json({ token: signToken(username), user: publicUser(store.users[k], false, null, undefined, undefined, true) });
 });
 app.post('/api/login', (req, res) => {
+  if (req.body?.eulaAccepted !== true) return res.status(400).json({ error: 'You must agree to the EULA before entering the network.' });
   const username = clean(req.body?.username, 24), password = String(req.body?.password || ''), u = getUser(username);
   if (!u || !verifyPassword(password, u.passwordHash)) return res.status(401).json({ error: 'Incorrect username or password.' });
   if (isBanned(u.username)) return res.status(403).json({ error: 'This account is banned.' });

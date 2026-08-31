@@ -1,0 +1,39 @@
+EDEN'S VIPER NETWORK — END USER LICENSE AGREEMENT
+Effective date: August 31, 2026
+
+By creating an account, signing in, or using Eden's Viper Network, you agree to this End User License Agreement ("Agreement"). If you do not agree, do not use the service.
+
+1. LICENSE TO USE
+You receive a personal, limited, revocable, non-exclusive, non-transferable license to use Eden's Viper Network for lawful personal communication and community participation.
+
+2. ACCOUNT RESPONSIBILITY
+You are responsible for maintaining the confidentiality of your password and for activity performed through your account. Do not share another person's credentials or impersonate another user.
+
+3. ACCEPTABLE CONDUCT
+You may not use the service to threaten or harass others, distribute malware, attempt unauthorized access, evade bans or moderation controls, spam the service, violate applicable law, or distribute content you do not have the right to share.
+
+4. USER CONTENT
+You keep ownership of content you submit. By posting content, you grant the service the limited permission necessary to transmit, display, store, and deliver that content as part of operating the chat service. You are responsible for what you post and share.
+
+5. FILES, LINKS, VOICE AND VIDEO
+Links, uploads, voice, video, and direct messages are user-provided communications. Use caution before opening files or links from other users. Do not upload malicious, illegal, or infringing material.
+
+6. MODERATION
+Administrators and moderators may remove content, mute or disable media, remove users from rooms, suspend access, or ban accounts when needed to enforce community rules, protect users, or maintain the service.
+
+7. PRIVACY AND COMMUNICATIONS
+Information you submit may be processed and stored as necessary to operate the service, including account details, chat messages, direct messages, moderation records, and uploaded files. Do not use the service for information you require to remain absolutely confidential.
+
+8. AVAILABILITY AND CHANGES
+The service may change, be interrupted, or be discontinued. Features may be added, removed, or modified, and this Agreement may be updated as the service evolves.
+
+9. DISCLAIMER
+The service is provided "as is" and "as available" without guarantees that it will always be uninterrupted, error-free, secure, or suitable for a particular purpose, to the extent permitted by applicable law.
+
+10. TERMINATION
+Your permission to use the service ends if your account is terminated or if you materially violate this Agreement. Provisions that by their nature should survive termination will continue to apply.
+
+11. ACCEPTANCE
+Checking the agreement box and continuing into the network confirms that you have read, understood, and agreed to this Agreement.
+
+This is a general-purpose software agreement template and is not a substitute for legal advice tailored to your jurisdiction or service.
